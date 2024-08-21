@@ -1,0 +1,39 @@
+CREATE DATABASE licoreria;
+
+USE licoreria;
+
+-- Tabla para usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'cliente') NOT NULL
+);
+
+-- Tabla para productos
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL
+);
+
+-- Tabla para órdenes
+CREATE TABLE ordenes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- Tabla para detalles de órdenes
+CREATE TABLE detalles_orden (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orden_id INT,
+    producto_id INT,
+    cantidad INT,
+    subtotal DECIMAL(10, 2),
+    FOREIGN KEY (orden_id) REFERENCES ordenes(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
